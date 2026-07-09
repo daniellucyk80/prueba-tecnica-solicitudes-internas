@@ -1,0 +1,31 @@
+.badge-estado-pendiente { background-color: #ffc107; color: #000; }
+.badge-estado-en_proceso { background-color: #0dcaf0; color: #000; }
+.badge-estado-resuelta { background-color: #198754; }
+.badge-estado-rechazada { background-color: #dc3545; }
+
+.badge-prioridad-alta { background-color: #dc3545; }
+.badge-prioridad-media { background-color: #fd7e14; }
+.badge-prioridad-baja { background-color: #6c757d; }
+
+.description-cell { max-width: 280px; }
+.actions-cell { white-space: nowrap; }
+
+.error-message {
+    display: none;
+    color: #842029;
+    background: #f8d7da;
+    border: 1px solid #f5c2c7;
+    padding: 0.75rem;
+    border-radius: 0.25rem;
+}
+
+.success-message {
+    display: none;
+    color: #0f5132;
+    background: #d1e7dd;
+    border: 1px solid #badbcc;
+    padding: 0.75rem;
+    border-radius: 0.25rem;
+}
+
+.loading { display: none; }
