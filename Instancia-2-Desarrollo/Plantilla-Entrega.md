@@ -12,11 +12,13 @@
 
 | # | Bug / síntoma | Archivo | Evidencia | Hipótesis de causa |
 |---|---|---|---|---|
-| 1 | _(completar)_ | | | |
-| 2 | | | | |
-| 3 | | | | |
-| 4 | | | | |
-| 5 | | | | |
+| 1 | la API no responde al listar solicitudes | `src/models/Database.php`, L15 | `php -l` devuelve: `syntax error, unexpected variable "$this" on line 16` | Falta el `;` al final del primer `setAttribute(...)`. Sin el punto y coma. |
+| 2 | la API devuelve error 500 en cualquier petición | `src/controllers/api.php` | `php -l` devuelve: `syntax error, unexpected token "private" on line 66` | Falta la llave `}` que cierra el método `handleRequest()`. El `try/catch` cierra correctamente, pero el método en sí queda abierto, y PHP interpreta que `getAll()` se declara dentro de otra función. |
+| 3 | No se pueden crear solicitudes nuevas: el alta falla | `assets/js/app.js` | Consola del navegador: `SyntaxError: await is only valid in async functions` | La función `createSolicitud()` usa `await` pero no está declarada como `async`.|
+| 4 | El listado no se puede filtrar y sale ordenado por fecha en vez de por prioridad | `src/models/Solicitud.php`, método `getAll()` | El parámetro `$filters` se recibe pero nunca se usa en la query. El `ORDER BY created_at DESC` ordena por fecha, no por prioridad | El método fue implementado de forma incompleta: no construye las condiciones `WHERE` a partir de los filtros, y el criterio de orden no coincide con la regla definida en Instancia 1 §7 (orden por prioridad, filtros combinables por estado y prioridad) |
+| 5 | Se puede editar una solicitud en cualquier estado, incluso resuelta (mucho enfasis en la entrevista) | `src/models/Solicitud.php`, método `update()` | El `UPDATE` se ejecuta directo sin verificar el estado. El botón editar se oculta en el front, pero una petición PUT directa modifica igual una resuelta | Falta validación de estado en el backend antes de actualizar. La única protección actual está en el frontend. Rompe la regla de Instancia 1: "una solicitud resuelta es ineditable" y "solo se edita en estado pendiente" |
+| 6 | Se puede cambiar una solicitud a cualquier estado sin respetar el ciclo de vida (ej: resuelta -> pendiente) | `src/models/Solicitud.php`, método `cambiarEstado()` | El `UPDATE` de estado se ejecuta con cualquier valor recibido, sin validar la transición. Un PATCH directo permite saltos inválidos o estados inexistentes | Falta validar en el backend que la transición sea coherente con el ciclo de vida de Instancia 1 (pendiente -> en proceso->resuelta/rechazada; los finales no admiten cambios) |
+| 7 | El título viaja vacío aunque el usuario lo complete | `index.html`, campo título | El input tiene `id="titulo"` pero le falta `name="titulo"`. `FormData` recoge los campos por `name`, así que el título nunca se envía. La validación "título obligatorio" del backend se dispara siempre | Falta el atributo `name` en el input del título. |
 
 ---
 
