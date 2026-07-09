@@ -110,7 +110,7 @@ async function saveSolicitud() {
     }
 }
 
-function createSolicitud(form) {
+async function createSolicitud(form) {
     const formData = new FormData(form);
     const response = await fetch(API_URL, { method: 'POST', body: formData });
     const result = await response.json();
