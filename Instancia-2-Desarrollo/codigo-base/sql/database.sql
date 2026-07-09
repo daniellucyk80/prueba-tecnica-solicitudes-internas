@@ -1,5 +1,5 @@
 -- Base de datos para el sistema de solicitudes internas
-CREATE DATABASE IF NOT EXISTS sistema_solicitudes;
+CREATE DATABASE IF NOT EXISTS sistema_solicitudes CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE sistema_solicitudes;
 
 CREATE TABLE solicitudes (
@@ -12,7 +12,7 @@ CREATE TABLE solicitudes (
     estado ENUM('pendiente', 'en_proceso', 'resuelta', 'rechazada') NOT NULL DEFAULT 'pendiente',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO solicitudes (titulo, descripcion, area_solicitante, area_destino, prioridad, estado) VALUES
 ('Impresora sin toner', 'La impresora del piso 2 no imprime. Falta recarga de toner negro.', 'Administración', 'Sistemas', 'media', 'pendiente'),
