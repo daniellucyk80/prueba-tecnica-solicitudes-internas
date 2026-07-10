@@ -113,12 +113,12 @@ class SolicitudAPI {
     }
 
     private function delete($id) {
-        $ok = $this->solicitud->delete($id);
-        if ($ok) {
-            $this->sendResponse(['message' => 'Solicitud eliminada']);
-        } else {
-            $this->sendError('Solicitud no encontrada', 404);
-        }
+      $result = $this->solicitud->delete($id);
+    if ($result['ok']) {
+        $this->sendResponse(['message' => 'Solicitud eliminada']);
+    } else {
+        $this->sendError($result['error'], $result['status'] ?? 400);
+    }
     }
 
     private function cambiarEstado($id) {

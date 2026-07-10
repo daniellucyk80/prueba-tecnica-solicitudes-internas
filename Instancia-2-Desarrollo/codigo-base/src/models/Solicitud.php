@@ -72,8 +72,16 @@ class Solicitud {
     }
 
     public function delete($id) {
-        $stmt = $this->db->query('DELETE FROM solicitudes WHERE id = ?', [$id]);
-        return $stmt->rowCount() > 0;
+        $actual = $this->getById($id);
+        
+        if (!$actual) {
+            return ['ok' => false, 'error' => 'Solicitud no encontrada', 'status' => 404];
+        }
+        if ($actual['estado'] !== 'pendiente') {
+            return ['ok' => false, 'error' => 'Solo se puede eliminar una solicitud pendiente. Estado actual: ' . $actual['estado'], 'status' => 409];
+        }
+        $this->db->query('DELETE FROM solicitudes WHERE id = ?', [$id]);
+        return ['ok' => true];
     }
 
     public function cambiarEstado($id, $nuevoEstado) {
