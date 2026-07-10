@@ -21,6 +21,7 @@
 | 7 | El título viaja vacío aunque el usuario lo complete | `index.html`, campo título | El input tiene `id="titulo"` pero le falta `name="titulo"`. `FormData` recoge los campos por `name`, así que el título nunca se envía. La validación "título obligatorio" del backend se dispara siempre | Falta el atributo `name` en el input del título. |
 | 8 | Los acentos y la ñ se ven corruptos en los datos de la base (ej: "Administraci??n") | `sql/database.sql`, `CREATE DATABASE` y `CREATE TABLE` | Los textos fijos del HTML se ven bien (charset correcto), pero los datos que vienen de la base salen mal. El DSN ya declara `charset=utf8mb4`, así que la falla no está en la conexión | El `CREATE DATABASE` y el `CREATE TABLE` no declaran `utf8mb4`. La tabla se crea con la codificación por defecto del servidor , y los INSERT con acentos se almacenan corruptos.|
 | 9 | Los filtros de la pantalla no filtran nada: siempre se muestran todas las solicitudes | `assets/js/app.js`, `loadSolicitudes()` y `applyFilters()` | La API filtra bien si se la llama con `?prioridad=alta` en la URL, pero desde la pantalla no. `loadSolicitudes()` hace `fetch(API_URL)` sin leer los selects ni agregar los filtros a la URL | El frontend nunca lee los valores de los `<select>` de filtro ni los envía a la API. `applyFilters()` solo recarga sin pasar los filtros seleccionados |
+| 10 | Se puede eliminar una solicitud en cualquier estado (debería permitirse solo si está pendiente) | `src/models/Solicitud.php`, método `delete()` | El `DELETE` se ejecuta sin verificar el estado. Un DELETE directo (curl/consola) borra una resuelta o en proceso, saltándose la regla | Falta validación de estado en el backend antes de borrar. El modal de confirmación del frontend cubre la UX, pero no la regla de negocio de Instancia 1 ("baja solo mientras está pendiente") |
 
 ---
 
@@ -72,18 +73,9 @@ _(completar)_
 
 ## 5. Declaración de IA
 
-**¿Usaste herramientas de IA?** Sí
+¿Usaste herramientas de IA? Sí
 
-**Herramientas utilizadas:**
-- _(completar)_
-
-**Log de prompts y validaciones manuales:**
-
-### Prompts relevantes
-1. _(completar con tus palabras)_
-
-### Validaciones manuales
-1. _(completar)_
+Herramientas
 
 _(Ver Reglas-Uso-IA.md)_
 
