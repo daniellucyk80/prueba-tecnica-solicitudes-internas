@@ -104,12 +104,12 @@ class SolicitudAPI {
             $this->sendError($errors, 400);
             return;
         }
-        $ok = $this->solicitud->update($id, $data);
-        if ($ok) {
-            $this->sendResponse(['message' => 'Solicitud actualizada']);
-        } else {
-            $this->sendError('Error al actualizar', 500);
-        }
+        $result = $this->solicitud->update($id, $data);
+            if ($result['ok']) {
+                $this->sendResponse(['message' => 'Solicitud actualizada']);
+            } else {
+                $this->sendError($result['error'], $result['status'] ?? 400);
+}
     }
 
     private function delete($id) {

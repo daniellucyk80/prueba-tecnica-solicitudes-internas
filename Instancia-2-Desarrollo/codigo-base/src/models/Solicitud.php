@@ -48,18 +48,27 @@ class Solicitud {
     }
 
     public function update($id, $data) {
-        $sql = 'UPDATE solicitudes SET titulo = ?, descripcion = ?, area_solicitante = ?,
-                area_destino = ?, prioridad = ? WHERE id = ?';
-        $params = [
-            $data['titulo'],
-            $data['descripcion'],
-            $data['area_solicitante'],
-            $data['area_destino'],
-            $data['prioridad'],
-            $id
-        ];
-        $stmt = $this->db->query($sql, $params);
-        return $stmt->rowCount() > 0;
+   
+    $actual = $this->getById($id);
+    if (!$actual) {
+        return ['ok' => false, 'error' => 'Solicitud no encontrada', 'status' => 404];
+    }
+    if ($actual['estado'] !== 'pendiente') {
+        return ['ok' => false, 'error' => 'Solo se puede editar una solicitud pendiente. Estado actual: ' . $actual['estado'], 'status' => 409];
+    }
+
+    $sql = 'UPDATE solicitudes SET titulo = ?, descripcion = ?, area_solicitante = ?,
+            area_destino = ?, prioridad = ? WHERE id = ?';
+    $params = [
+        $data['titulo'],
+        $data['descripcion'],
+        $data['area_solicitante'],
+        $data['area_destino'],
+        $data['prioridad'],
+        $id
+    ];
+    $this->db->query($sql, $params);
+    return ['ok' => true];
     }
 
     public function delete($id) {
