@@ -13,8 +13,26 @@ document.addEventListener('DOMContentLoaded', function () {
 async function loadSolicitudes() {
     showLoading(true);
     try {
-        const response = await fetch(API_URL);
+        
+        const estado = document.getElementById('filterEstado').value;
+        const prioridad = document.getElementById('filterPrioridad').value;
+
+        
+        let url = API_URL;
+        const params = [];
+        if (estado) {
+            params.push('estado=' + estado);
+        }
+        if (prioridad) {
+            params.push('prioridad=' + prioridad);
+        }
+        if (params.length > 0) {
+            url = url + '?' + params.join('&');
+        }
+
+        const response = await fetch(url);
         const result = await response.json();
+        
         if (result.success) {
             displaySolicitudes(result.data);
         } else {
