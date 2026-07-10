@@ -9,9 +9,22 @@ class Solicitud {
     }
 
     public function getAll($filters = []) {
-        $sql = 'SELECT * FROM solicitudes ORDER BY created_at DESC';
-        $stmt = $this->db->query($sql);
-        return $stmt->fetchAll();
+    $sql = 'SELECT * FROM solicitudes WHERE 1=1';
+    $params = [];
+
+    if (!empty($filters['estado'])) {
+        $sql .= ' AND estado = ?';
+        $params[] = $filters['estado'];
+    }
+    if (!empty($filters['prioridad'])) {
+        $sql .= ' AND prioridad = ?';
+        $params[] = $filters['prioridad'];
+    }
+
+    $sql .= " ORDER BY FIELD(prioridad, 'alta', 'media', 'baja'), created_at DESC";
+
+    $stmt = $this->db->query($sql, $params);
+    return $stmt->fetchAll();
     }
 
     public function getById($id) {
