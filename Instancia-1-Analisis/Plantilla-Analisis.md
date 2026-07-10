@@ -94,15 +94,15 @@ Tabla principal: **`solicitudes`**
 | `titulo` | VARCHAR(150), NOT NULL | Título del pedido. |
 | `descripcion` | TEXT, NOT NULL | Detalle del pedido. |
 | `area_solicitante` | VARCHAR(100), NOT NULL | Área que crea el pedido (texto libre por ahora, sin login). |
-| `area_destinataria` | VARCHAR(100), NOT NULL | Área a la que va dirigido. |
+| `area_destino` | VARCHAR(100), NOT NULL | Área a la que va dirigido. |
 | `prioridad` | ENUM('alta','media','baja'), NOT NULL | Prioridad del pedido. |
 | `estado` | ENUM('pendiente','en_proceso','resuelta','rechazada'), NOT NULL, DEFAULT 'pendiente' | Estado actual. |
-| `creado_en` | DATETIME, DEFAULT CURRENT_TIMESTAMP | Fecha de alta. |
-| `actualizado_en` | DATETIME | Última modificación de estado. |
+| `created_at` | DATETIME, DEFAULT CURRENT_TIMESTAMP | Fecha de alta. |
+| `updated_at` | DATETIME | Última modificación de estado. |
 
 **Notas de diseño:**
 - Uso ENUM para estado y prioridad porque son conjuntos cerrados y conocidos; garantiza integridad a nivel base.
-- No modelo tabla de usuarios/áreas todavía: la entrevista deja login y áreas fuera de alcance. Cuando se implemente login, area_solicitante y area_destinataria pasarían a ser claves foráneas a una tabla areas, y se agregaría usuarios.
+- No modelo tabla de usuarios/áreas todavía: la entrevista deja login y áreas fuera de alcance. Cuando se implemente login, area_solicitante y area_destino pasarían a ser claves foráneas a una tabla areas, y se agregaría usuarios.
 - El orden por prioridad se resuelve en la consulta (ORDER BY FIELD(prioridad,'alta','media','baja')), no requiere campo extra.
 
 ---
