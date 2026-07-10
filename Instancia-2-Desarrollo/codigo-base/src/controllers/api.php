@@ -127,12 +127,13 @@ class SolicitudAPI {
             $this->sendError('Estado requerido', 400);
             return;
         }
-        $ok = $this->solicitud->cambiarEstado($id, $data['estado']);
-        if ($ok) {
-            $this->sendResponse(['message' => 'Estado actualizado']);
-        } else {
-            $this->sendError('No se pudo cambiar el estado', 400);
-        }
+        $result = $this->solicitud->cambiarEstado($id, $data['estado']);
+            if ($result['ok']) {
+                 $this->sendResponse(['message' => 'Estado actualizado']);
+            } 
+            else {
+                $this->sendError($result['error'], $result['status'] ?? 400);
+            }
     }
 
     private function getInputData() {

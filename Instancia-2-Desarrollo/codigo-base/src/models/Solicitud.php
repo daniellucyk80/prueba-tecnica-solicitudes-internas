@@ -77,11 +77,25 @@ class Solicitud {
     }
 
     public function cambiarEstado($id, $nuevoEstado) {
-        $stmt = $this->db->query(
-            'UPDATE solicitudes SET estado = ? WHERE id = ?',
-            [$nuevoEstado, $id]
-        );
-        return $stmt->rowCount() > 0;
+        $actual = $this->getById($id);
+        if (!$actual) {
+            return ['ok' => false, 'error' => 'Solicitud no encontrada', 'status' => 404];
+        }
+
+        $transiciones = [
+            'pendiente'  => ['en_proceso'],
+            'en_proceso' => ['resuelta', 'rechazada'],
+            'resuelta'   => [],
+            'rechazada'  => []
+        ];
+
+        $estadoActual = $actual['estado'];
+
+        if (!in_array($nuevoEstado, $transiciones[$estadoActual])) {
+            return ['ok' => false, 'error' => "No se puede pasar de '$estadoActual' a '$nuevoEstado'", 'status' => 409];
+        }
+        $this->db->query('UPDATE solicitudes SET estado = ? WHERE id = ?', [$nuevoEstado, $id]);
+        return ['ok' => true];
     }
 
     public function validate($data) {
