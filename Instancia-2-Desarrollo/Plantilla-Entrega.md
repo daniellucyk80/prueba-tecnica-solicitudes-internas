@@ -1,8 +1,8 @@
 # Plantilla de Entrega — Instancia 2
 
 **Nombre del candidato:** Lucyk Daniel Sebastián
-**Fecha de entrega:** _(completar al entregar)_
-**URL del repositorio público:** _(completar con el link de GitHub)_
+**Fecha de entrega:** 15/07/2026
+**URL del repositorio público:** https://github.com/daniellucyk80/prueba-tecnica-solicitudes-internas 
 
 **Análisis de negocio:** entregado en `Instancia-1-Analisis/Plantilla-Analisis.md`.
 
